@@ -6,6 +6,10 @@ The user will be able to create journal entries and save them to a database. Use
 
 The HTML templates will be styled using the Bulma CSS frameowork. Bulma will be delivered without downloading with CDN via jdDelivr.
 
+Prerequisites - Please install the following before cloning and running the program
+- Python
+- Django
+
 After cloning the repository please do the following in order to run the project:
 
 1. In your terminal move into the journal folder (cd django-journal, cd journal)
