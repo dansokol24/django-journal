@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django Journal</title>
+
+    <!-- Bulma CSS framework -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+
+</head>
+<body>
+    <nav class="navbar is-dark">
+        <div class="navbar-brand">
+            <a href="{% url 'index' %}" class="navbar-item">Django Journal</a>
+        </div>
+
+        <div class="navbar-menu">
+            <div class="navbar-end">
+                <a href="{% url 'index' %}?entryid=0" class="navbar-item">New Entry</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="section">
+        <div class="columns">
+            <div class="column is-2">
+                <aside class="menu">
+                    <p class="menu-label">Entries</p>
+
+                    <ul class="menu-list">
+                        {% for entry in entries %}
+                            <li>
+                                <a href="{% url 'index' %}?entryid={{ entry.id }}"><strong>{{ entry.date }}</strong><br>{{ entry.header }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </aside>
+            </div>
+
+            <div class="column is-10">
+                <form method="post" action="{% url 'index' %}">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="entryid" value="{{ entryid }}">
+
+                    <div class="field">
+                        <label class="label">Date</label>
+                        <div class="control">
+                            <input type="date" class="input" name="date" {% if entry %} value="{{ entry.date }}"{% endif %}>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Header</label>
+                        <div class="control">
+                            <input type="text" class="input" name="header" placeholder="Header"{% if entry %} value="{{ entry.header }}"{% endif %}>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Content</label>
+                        <div class="control">
+                            <textarea class="textarea" name="content" placeholder="Content">{% if entry %}{{ entry.content }}{% endif %}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-warning">Save</button>
+                        </div>
+                        {% if entry %}
+                            <div class="control">
+                                <a href="{% url 'delete_entry' entry.id %}" class="button is-danger">Delete</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
